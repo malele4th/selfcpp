@@ -1,0 +1,4 @@
+# 运行主程序时, 需要先export LD_LIBRARY_PATH=xxx
+export LD_LIBRARY_PATH=/da1/malele/mycode/cpp/qmodule/boost/lib:$LD_LIBRARY_PATH
+
+# 在 Makefile 文件中export LD_LIBRARY_PATH，在运行时好像不起作用，暂时没解决
