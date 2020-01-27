@@ -21,13 +21,17 @@
 #include "similarity.h"
 #include "splitData.h"
 #include "scaler.h"
+#include "kmeans.h"
 
 using namespace std;
 
+
 int main(int argc, char *argv[]){
     time_t start_time = time(0);
-    cout<< "=== start time === " << ctime(&start_time) <<endl;
-    const char *input_file  = "data/itag_embedding";
+    cout<< "==== start time === " << ctime(&start_time) <<endl;
+
+    const char *input_file   = "data/itag_embedding";
+    const char *output_file  = "data/itag_kmeans_result";
 
     vector<vector<float> > data_set;
     vector<string> data_label;
@@ -39,14 +43,15 @@ int main(int argc, char *argv[]){
     vector<vector<float> > scaler_data_set;
     scaler_obj.fit(data_set, scaler_data_set);
     
-    for(int i = 0; i < scaler_data_set.size(); i++){
-        cout<<endl;
-        cout<<"dim = "<< scaler_data_set[i].size() <<endl;
-        for(int j = 0; j < scaler_data_set[i].size(); j++){
-            cout<< scaler_data_set[i][j] << endl;
-        }   
-    }   
-
+    Kmeans kmeans(20, "kmeans++");
+    kmeans.loadDataSet(scaler_data_set, data_label);
+    kmeans.runKmeans();
+    kmeans.calinski_harabaz_score();
+    kmeans.outputCluster(output_file);
+    
+    time_t end_time = time(0);
+    cout<< "==== end time === " << ctime(&end_time) <<endl;
     return 0;
 }
+
 

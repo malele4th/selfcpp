@@ -7,11 +7,10 @@ CFLAGS = $(CMD) -Wall -fno-strict-aliasing -fPIC -Wfloat-equal -Wshadow -DNDEBUG
 
 QMODULE = ../qmodule
 
-INCLUDE = -I ./readFile -I ./splitString -I ./similarity -I $(QMODULE)/boost/include -I ./splitData
-LIB = -L ./readFile -lreadfile -L ./splitString -lsplitstring -L ./similarity -lsimilarity -L $(QMODULE)/boost/lib -lboost_system -lboost_thread
+INCLUDE = -I ./readFile -I ./splitString -I ./similarity -I $(QMODULE)/boost/include -I ./splitData -I ./scaler -I ./kmeans
+LIB = -L ./scaler/ -lscaler -L ./readFile -lreadfile -L ./splitString -lsplitstring -L ./similarity -lsimilarity -L $(QMODULE)/boost/lib -lboost_system -lboost_thread -L ./kmeans -lkmeans
 
-OBJ = main.o
-SRC = main.cpp
+SRC = v2_main_kmeans.cpp   ## 主函数文件 
 
 all : prepare main
 
@@ -19,13 +18,17 @@ prepare:
 	make -C ./splitString
 	make -C ./similarity
 	make -C ./readFile
+	make -C ./scaler
+	make -C ./kmeans
 
 main:
-	 $(CXX) $(CFLAGS) $(SRC) -o $@ $(INCLUDE) $(LIB)
+	$(CXX) $(CFLAGS) $(SRC) -o $@ $(INCLUDE) $(LIB)
 
 clean:
 	make -C ./splitString clean
 	make -C ./similarity clean
 	make -C ./readFile clean
+	make -C ./scaler clean
+	make -C ./kmeans clean
 	rm -f *.o main
 
